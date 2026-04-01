@@ -1,4 +1,4 @@
-FROM node:20-apline
+FROM oven/bun:latest
 
 WORKDIR /app
 
