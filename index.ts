@@ -1,7 +1,6 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 import { Client, Message, GatewayIntentBits } from "discord.js";
 import { ProxyAgent } from "undici";
+import { WebSocketManager } from "@discordjs/ws";
 import { commands, load } from "./utils/loader";
 import * as logr from "./utils/log.ts";
 
@@ -15,7 +14,7 @@ export const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
     ],
-    ...(proxyAgent && { rest: { agent: proxyAgent }, ws: { agent: proxyAgent } }),
+    rest: proxyAgent ? { agent: proxyAgent } : undefined,
 });
 
 const PREFIX = "!";
