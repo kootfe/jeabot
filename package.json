@@ -1,5 +1,8 @@
 {
   "description": "",
+  "scripts": {
+      "start": "bun run index.ts"
+  },
   "dependencies": {
     "@octokit/rest": "^22.0.1",
     "@types/caniuse-api": "^3.0.6",
