@@ -1,3 +1,5 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 import { Client, Message, GatewayIntentBits } from "discord.js";
 import { commands, load } from "./utils/loader";
 import * as logr from "./utils/log.ts";
@@ -22,6 +24,7 @@ const reply: string[] = [
 const hllo: string[] = [
     "sa", "selam", "merhaba"
 ];
+
 client.on("messageCreate", async (msg: Message) => {
     if (msg.author.bot || !msg.content.startsWith(PREFIX)) {
         for (let e of hllo) {
