@@ -5,8 +5,8 @@ import { ProxyAgent } from "undici";
 import { commands, load } from "./utils/loader";
 import * as logr from "./utils/log.ts";
 
-const proxyAgent = process.env.HTTPS_PROXY
-    ? new ProxyAgent(process.env.HTTPS_PROXY)
+const proxyAgent = process.env.DISCORD_PROXY
+    ? new ProxyAgent(process.env.DISCORD_PROXY)
     : undefined;
 
 export const client = new Client({
@@ -15,7 +15,7 @@ export const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
     ],
-    ...(proxyAgent && { rest: { agent: proxyAgent } }),
+    ...(proxyAgent && { rest: { agent: proxyAgent }, ws: { agent: proxyAgent } }),
 });
 
 const PREFIX = "!";
