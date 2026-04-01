@@ -58,9 +58,11 @@ function bakeHelpMenu() {
         HelpMenuTxt += `\`${cmd.name}\` - ${cmd.desc}\n`;
     }
 }
-
 export async function load() {
     await loadCommands();
     bakeHelpMenu();
-    client.login(process.env.TOKEN);
+    await client.login(process.env.TOKEN).catch(err => {
+        logr.error("Failed to login to Discord", "LOADER", err);
+        process.exit(1);
+    });
 }
