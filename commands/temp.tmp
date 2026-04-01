@@ -1,0 +1,10 @@
+import { Message } from "discord.js";
+import { Command, Cats } from "../types/cmd.ts";
+
+export const ping: Command = {
+    name: "",
+    desc: "",
+    category: Cats.UILITYS,
+    exec: (msg: Message, args: string[]) => {
+    }
+}
