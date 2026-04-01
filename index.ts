@@ -1,11 +1,15 @@
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 import { Client, Message, GatewayIntentBits } from "discord.js";
 import { ProxyAgent } from "undici";
-import { WebSocketManager } from "@discordjs/ws";
 import { commands, load } from "./utils/loader";
 import * as logr from "./utils/log.ts";
 
 const proxyAgent = process.env.DISCORD_PROXY
-    ? new ProxyAgent(process.env.DISCORD_PROXY)
+    ? new ProxyAgent({ 
+        uri: process.env.DISCORD_PROXY,
+        requestTls: { rejectUnauthorized: false }
+      })
     : undefined;
 
 export const client = new Client({
