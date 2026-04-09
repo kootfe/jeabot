@@ -1,5 +1,6 @@
 {
   "description": "",
+  "type": "module",
   "scripts": {
       "start": "bun run index.ts"
   },
