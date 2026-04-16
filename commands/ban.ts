@@ -37,11 +37,25 @@ export const $: Command = {
 
         let reason = args.slice(1).join(" ");
         const banUser = await msg.client.users.fetch(uid);
+        const trgt = await msg.guild.members.fetch(uid);
+        let bot = msg.guild.members.me;
+        if (!bot) return;
+
+        if (trgt.roles.highest.position >= bot.roles.highest.position) {
+            msg.reply("I cant ban this user (bot role too low)");
+            return;
+        }
+
+        if (trgt.roles.highest.position >= msg.member.roles.highest.position) {
+            msg.reply("I cant ban this user (your role too low)");
+            return;
+        }
 
         try {
             await msg.guild.members.ban(uid, { reason });
         } catch (err) {
             msg.reply("Kullanıcı banlanamadı (eksik yetki veya hiyerarşi)");
+            return;
         }
 
         const embed = new EmbedBuilder()
