@@ -4,7 +4,8 @@ export enum Cats {
     SOCIAL,
     WEB,
     NET,
-    FUN
+    FUN,
+    MOD,
 };
 
 export function catToString(cat: Cats): string {
@@ -14,6 +15,7 @@ export function catToString(cat: Cats): string {
         case Cats.NET: return "networking";
         case Cats.WEB: return "web";
         case Cats.FUN: return "fun";
+        case Cats.MOD: return "moderation";
         default: return "Unknown";
     }
 }   

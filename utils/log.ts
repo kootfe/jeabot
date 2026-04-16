@@ -11,7 +11,7 @@ export function warn(msg: string, category?: string, command?: string) {
 }
 
 export function success(msg: string, category?: string, command?: string) {
-    console.warn(`\x1b[32m[Success${category ? `/${category}`: ""}](${command? `Cmd: ${command} |` : ""} ${new Date().toISOString()}): ${msg}\x1b[0m`);
+    console.log(`\x1b[32m[Success${category ? `/${category}`: ""}](${command? `Cmd: ${command} |` : ""} ${new Date().toISOString()}): ${msg}\x1b[0m`);
 }
 
 export function error(msg: string, category?: string, command?: string, error?: any) {

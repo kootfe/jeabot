@@ -37,6 +37,7 @@ let HelpMenuTxt = "# Help Menu\n";
 export function getHelpMenu(): string {
     return HelpMenuTxt;
 }
+
 function bakeHelpMenu() {
     const sort = Array.from(commands.values());
     sort.sort((a, b) => {
