@@ -9,29 +9,29 @@ export const $: Command = {
     category: Cats.MOD,
     exec: async (msg: Message, args: string[]) => {
         if (!msg.inGuild() || !msg.member) {
-            msg.reply("Lütfen sunucuda kullanın");
+            msg.reply("Lütfen sunucu içerisinde kullanın");
             return;
         }
 
         let id_room = getPermId("ban");
         if (!id_room) {
-            msg.reply("An internal error happened");
+            msg.reply("Bir bot hatası oluştu.");
             return;
         }
 
         if (!msg.member?.roles.cache.has(id_room[0])) {
-            msg.reply("Ban atma yetkiniz yok!");
+            msg.reply("Yasaklama yetkiniz yok!");
             return;
         }
 
         if (args.length < 2) {
-            msg.reply("Lütfen birini etiketleyiniz ve bir sebep giriniz");
+            msg.reply("Lütfen bir kişiyi etiketleyiniz ve bir sebep giriniz");
             return;
         }
 
         let uid = getUserId(args[0]);
         if (!uid) {
-            msg.reply("Lütfen önce kişiyi etiketleyin");
+            msg.reply("Lütfen önce bir kişiyi etiketleyin");
             return;
         }
 
@@ -41,13 +41,13 @@ export const $: Command = {
         try {
             await msg.guild.members.ban(uid, { reason });
         } catch (err) {
-            msg.reply("Kullanıcı banlanamadı (eksik yetki veya hiyerarşi)");
+            msg.reply("Kullanıcı Yasaklanamadı (eksik yetki veya hiyerarşi)");
         }
 
         const embed = new EmbedBuilder()
             .setColor(0xff3b3b)
-            .setTitle("🔨 Kullanıcı Banlandı")
-            .setDescription(`Bir kullanıcı bu sunucudan silindi.`)
+            .setTitle("🔨 Kullanıcı Yasaklandı")
+            .setDescription(`Bir kullanıcı bu sunucudan Yasaklandı`)
             .addFields(
                 {
                     name: "👤 Kullanıcı",
@@ -61,7 +61,7 @@ export const $: Command = {
                 },
                 {
                     name: "📌 Sebep",
-                    value: reason || "No reason provided",
+                    value: reason || "Bir sebep belirtilmedi!",
                     inline: true
                 }
             )
@@ -79,7 +79,7 @@ export const $: Command = {
         try {
             await banUser.send({ embeds: [embed] });
         } catch {
-            warn("Cant send dm to: " + uid + " " + banUser.username, "CMD/Ban", "ban");
+            warn("DM Gönderilemedi: " + uid + " " + banUser.username, "CMD/Ban", "ban");
         }
     }
 }

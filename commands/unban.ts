@@ -5,46 +5,46 @@ import { warn } from "../utils/log.ts";
 
 export const $: Command = {
     name: "unban",
-    desc: "unbans a person",
+    desc: "bir üyenin banını kaldırır.",
     category: Cats.MOD,
     exec: async (msg: Message, args: string[]) => {
         if (!msg.inGuild() || !msg.member) {
-            msg.reply("Lütfen sunucuda kullanın");
+            msg.reply("Lütfen sunucu içerisinde kullanın");
             return;
         }
 
         let id_room = getPermId("ban");
         if (!id_room) {
-            msg.reply("An internal error happened");
+            msg.reply("Bir bot hatası oluştu.");
             return;
         }
 
         if (!msg.member?.roles.cache.has(id_room[0])) {
-            msg.reply("Unban atma yetkiniz yok!");
+            msg.reply("Yasağı kaldırma yetkiniz yok!");
             return;
         }
 
         if (args.length < 1) {
-            msg.reply("Lütfen birini etiketleyiniz / ID giriniz");
+            msg.reply("Lütfen bir kişiyi etiketleyiniz / ID giriniz");
             return;
         }
 
         let uid = getUserId(args[0]);
         if (!uid) {
-            msg.reply("Lütfen önce kişiyi etiketleyin");
+            msg.reply("Lütfen önce bir kişiyi etiketleyin");
             return;
         }
 
         try {
             await msg.guild.members.unban(uid);
         } catch (err) {
-            msg.reply("Kullanıcı unbanlanamadı (eksik yetki veya hiyerarşi)");
+            msg.reply("Kullanıcının yasağı kaldırılamadı. (eksik yetki veya hiyerarşi)");
         }
 
         const embed = new EmbedBuilder()
             .setColor(0x3bff3b)
-            .setTitle("🔨 Kullanıcı Unbanlandı")
-            .setDescription(`Bir kullanıcı ceza süresi dolduğu için sunucuya geri katıldı.`)
+            .setTitle("🔨 Kullanıcının Yasağı Kaldırıldı")
+            .setDescription(`Bir kullanıcının ceza süresi dolduğu için yasağı kaldırıldı.`)
             .addFields(
                 {
                     name: "👤 Kullanıcı",
@@ -73,7 +73,7 @@ export const $: Command = {
         try {
             await banUser.send({ embeds: [embed] });
         } catch {
-            warn("Cant send DM to: " + uid + " " + banUser.username, "CMD/Unban", "unban");
+            warn("DM Gönderilemedi: " + uid + " " + banUser.username, "CMD/Unban", "unban");
         }
     }
 }
