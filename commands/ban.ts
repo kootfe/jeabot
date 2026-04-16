@@ -9,44 +9,48 @@ export const $: Command = {
     category: Cats.MOD,
     exec: async (msg: Message, args: string[]) => {
         if (!msg.inGuild() || !msg.member) {
-            msg.reply("Lutfen sunucude kulanin");
+            msg.reply("Lütfen sunucuda kullanın");
             return;
         }
+
         let id_room = getPermId("ban");
         if (!id_room) {
-            msg.reply("A internal error happened");
+            msg.reply("An internal error happened");
             return;
         }
+
         if (!msg.member?.roles.cache.has(id_room[0])) {
             msg.reply("Ban atma yetkiniz yok!");
             return;
         }
 
         if (args.length < 2) {
-            msg.reply("Lutfen birni etiketleyiniz. ve bir sebeb giriniz");
+            msg.reply("Lütfen birini etiketleyiniz ve bir sebep giriniz");
             return;
         }
 
         let uid = getUserId(args[0]);
         if (!uid) {
-            msg.reply("Lutfen ilk once kisi etiketleyin");
+            msg.reply("Lütfen önce kişiyi etiketleyin");
             return;
         }
+
         let reason = args.slice(1).join(" ");
         const banUser = await msg.client.users.fetch(uid);
 
         try {
             await msg.guild.members.ban(uid, { reason });
         } catch (err) {
-            msg.reply("Kualnici banlanamadi (eksik yetki ve ya hiararsi)");
+            msg.reply("Kullanıcı banlanamadı (eksik yetki veya hiyerarşi)");
         }
+
         const embed = new EmbedBuilder()
             .setColor(0xff3b3b)
-            .setTitle("🔨 Kulanici Banlandi")
-            .setDescription(`Bir kulanici bu sunucudan silindi.`)
+            .setTitle("🔨 Kullanıcı Banlandı")
+            .setDescription(`Bir kullanıcı bu sunucudan silindi.`)
             .addFields(
                 {
-                    name: "👤 Kulanici",
+                    name: "👤 Kullanıcı",
                     value: `<@${uid}> (\`${uid}\`)`,
                     inline: false
                 },
@@ -56,7 +60,7 @@ export const $: Command = {
                     inline: true
                 },
                 {
-                    name: "📌 Sebeb",
+                    name: "📌 Sebep",
                     value: reason || "No reason provided",
                     inline: true
                 }
@@ -64,10 +68,14 @@ export const $: Command = {
             .setFooter({
                 text: `JeaFriday Developer's`
             })
-            .setTimestamp(); const chnl = await msg.client.channels.fetch(id_room[1]);
+            .setTimestamp();
+
+        const chnl = await msg.client.channels.fetch(id_room[1]);
         if (!chnl || !chnl.isTextBased()) return;
+
         let txtChnl = chnl as TextChannel;
         await txtChnl.send({ embeds: [embed] });
+
         try {
             await banUser.send({ embeds: [embed] });
         } catch {
